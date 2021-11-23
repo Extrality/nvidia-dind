@@ -18,12 +18,18 @@ RUN distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && \
     apt-get update && apt-get install -y nvidia-docker2 docker.io docker-compose && \
     rm -rf /var/lib/apt/list/*
 
-COPY modprobe startup.sh /usr/local/bin/
-COPY supervisor/ /etc/supervisor/conf.d/
-COPY logger.sh /opt/bash-utils/logger.sh
+# missing dockremap user
 
-RUN chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe
-VOLUME /var/lib/docker
+ENV DOCKER_TLS_CERTDIR=/certs
+RUN mkdir /certs /certs/client && chmod 1777 /certs /certs/client
 
-ENTRYPOINT ["startup.sh"]
-CMD ["sh"]
+# https://github.com/docker-library/docker
+ADD https://raw.githubusercontent.com/docker-library/docker/master/modprobe.sh /usr/local/bin/modprobe
+ADD https://raw.githubusercontent.com/docker-library/docker/master/dockerd-entrypoint.sh /usr/local/bin/
+ADD https://raw.githubusercontent.com/docker-library/docker/master/docker-entrypoint.sh /usr/local/bin/
+ADD https://raw.githubusercontent.com/moby/moby/master/hack/dind /usr/local/bin/dind
+
+RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh /usr/local/bin/docker-entrypoint.sh /usr/local/bin/dind
+
+ENTRYPOINT ["dockerd-entrypoint.sh"]
+CMD []
