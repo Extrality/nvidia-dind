@@ -4,9 +4,10 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch: ~
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ehfd/nvidia-dind
+  IMAGE_NAME: awoimbee/nvidia-dind
 jobs:
   build:
     runs-on: ubuntu-latest
