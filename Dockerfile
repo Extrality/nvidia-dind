@@ -1,21 +1,21 @@
 FROM nvidia/opengl:base-ubuntu20.04
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
         apt-utils \
         ca-certificates \
         openssh-client \
         curl \
         iptables \
-        git \
-        gnupg \
-        supervisor && \
+        gnupg && \
     rm -rf /var/lib/apt/list/*
 
 # NVIDIA Container Toolkit & Docker
 RUN distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && \
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | apt-key add - && \
     curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list && \
-    apt-get update && apt-get install -y nvidia-docker2 docker.io docker-compose && \
+    apt-get update && \
+    apt-get install -y nvidia-docker2 docker.io && \
     rm -rf /var/lib/apt/list/*
 
 # missing dockremap user
