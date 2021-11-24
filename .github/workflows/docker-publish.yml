@@ -7,7 +7,7 @@ on:
   workflow_dispatch: ~
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: awoimbee/nvidia-dind
+  IMAGE_NAME: extrality/nvidia-dind
 jobs:
   build:
     runs-on: ubuntu-latest
