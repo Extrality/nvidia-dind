@@ -29,10 +29,14 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Create image ID
+        run: |
+          echo "IMAGE_TAG=$(date --utc '+%g-%m-%dT%H-%M')" | tee -a $GITHUB_ENV
+          echo "IMAGE_PATH=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tee -a $GITHUB_ENV
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.IMAGE_PATH }}:${{ env.IMAGE_TAG }},${{ env.IMAGE_PATH }}:latest
           labels: ${{ steps.meta.outputs.labels }}
