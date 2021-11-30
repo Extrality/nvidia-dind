@@ -1,4 +1,4 @@
-FROM nvidia/opengl:base-ubuntu20.04
+FROM nvidia/cuda:11.4.2-runtime-ubuntu20.04
 
 RUN apt-get update && \
     apt-get install -y \
