@@ -1,22 +1,24 @@
-FROM nvidia/cuda:11.4.2-runtime-ubuntu20.04
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
 
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && \
     apt-get install -y \
         apt-utils \
         ca-certificates \
         openssh-client \
         curl \
         iptables \
-        gnupg && \
-    rm -rf /var/lib/apt/list/*
+        gnupg
 
 # NVIDIA Container Toolkit & Docker
-RUN distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && \
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | apt-key add - && \
     curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list && \
     apt-get update && \
-    apt-get install -y nvidia-docker2 docker.io && \
-    rm -rf /var/lib/apt/list/*
+    apt-get install -y nvidia-docker2 docker.io
 
 # missing dockremap user
 
