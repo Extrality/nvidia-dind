@@ -1,4 +1,4 @@
-FROM docker.io/nvidia/cuda:12.9.1-runtime-ubuntu24.04
+FROM docker.io/nvidia/cuda:13.1.1-runtime-ubuntu24.04
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
